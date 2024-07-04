@@ -102,8 +102,8 @@ void PlanningVisualization::turnCallback(const geometry_msgs::PoseStampedPtr &ms
     line_size_ = 6;
     line_begin_.resize(line_size_);
     line_end_.resize(line_size_);
-    line_begin_ = {3, 0, 4, 1, 4, 5};
-    line_end_ = {0, 4, 1, 2, 6, 6};
+    line_begin_ = {3, 0, 6, 1, 4, 5};
+    line_end_ = {0, 6, 1, 2, 6, 4};
   }
   else if (state == 4) /* U */
   {

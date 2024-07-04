@@ -42,7 +42,7 @@
 
     <include file="$(find ego_planner)/launch/run_in_sim.launch">
         <arg name="drone_id" value="0" />
-        <arg name="init_x" value="-30.0" />
+        <arg name="init_x" value="-20.0" />
         <arg name="init_y" value="0.0" />
         <arg name="init_z" value="0.5" />
         <arg name="target_x" value="26.0" />
@@ -57,7 +57,7 @@
 
     <include file="$(find ego_planner)/launch/run_in_sim.launch">
         <arg name="drone_id" value="1" />
-        <arg name="init_x" value="-27.5925" />
+        <arg name="init_x" value="-17.5925" />
         <arg name="init_y" value="2.2422" />
         <arg name="init_z" value="0.5" />
         <arg name="target_x" value="26.0" />
@@ -72,7 +72,7 @@
 
     <include file="$(find ego_planner)/launch/run_in_sim.launch">
         <arg name="drone_id" value="2" />
-        <arg name="init_x" value="-30.0312" />
+        <arg name="init_x" value="-20.0312" />
         <arg name="init_y" value="4.5546" />
         <arg name="init_z" value="0.5" />
         <arg name="target_x" value="26.0" />
@@ -87,7 +87,7 @@
 
     <include file="$(find ego_planner)/launch/run_in_sim.launch">
         <arg name="drone_id" value="3" />
-        <arg name="init_x" value="-32.2956" />
+        <arg name="init_x" value="-22.2956" />
         <arg name="init_y" value="2.2074" />
         <arg name="init_z" value="0.5" />
         <arg name="target_x" value="26.0" />
@@ -102,7 +102,7 @@
 
     <include file="$(find ego_planner)/launch/run_in_sim.launch">
         <arg name="drone_id" value="4" />
-        <arg name="init_x" value="-27.6918" />
+        <arg name="init_x" value="-17.6918" />
         <arg name="init_y" value="-2.2773" />
         <arg name="init_z" value="0.5" />
         <arg name="target_x" value="26.0" />
@@ -117,7 +117,7 @@
 
     <include file="$(find ego_planner)/launch/run_in_sim.launch">
         <arg name="drone_id" value="5" />
-        <arg name="init_x" value="-30.0063" />
+        <arg name="init_x" value="-20.0063" />
         <arg name="init_y" value="-4.4847" />
         <arg name="init_z" value="0.5" />
         <arg name="target_x" value="26.0" />
@@ -132,7 +132,7 @@
 
     <include file="$(find ego_planner)/launch/run_in_sim.launch">
         <arg name="drone_id" value="6" />
-        <arg name="init_x" value="-32.2956" />
+        <arg name="init_x" value="-22.2956" />
         <arg name="init_y" value="-2.2422" />
         <arg name="init_z" value="0.5" />
         <arg name="target_x" value="26.0" />

@@ -52,7 +52,7 @@ def main():
     relative_positions_u = [config['global_goal'][f'relative_pos_u{i}'] for i in range(7)]
     relative_positions = [relative_positions_s, relative_positions_y, relative_positions_s, relative_positions_u]
 
-    x_list = [-15, 0, 15, 30]
+    x_list = [-9, 0, 10, 22]
     goal_publisher = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=1)
 
     odom_data = [{} for _ in range(7)]
@@ -62,7 +62,7 @@ def main():
     pointcloud_data = {'points': []}
     rospy.Subscriber('/map_generator/global_cloud', PointCloud2, pointcloud_callback, callback_args=(pointcloud_data['points'], pointcloud_data))
 
-    rate = rospy.Rate(1)  # 1 Hz
+    rate = rospy.Rate(5)  # 1 Hz
     current_goal_index = 0
 
     '''
@@ -79,7 +79,7 @@ def main():
         occupied = False
         for i in range(7):
             relative_position = relative_positions[current_goal_index][i]
-            central_position = {'x': new_goal.pose.position.x, 'y': 2, 'z': 0}
+            central_position = {'x': new_goal.pose.position.x, 'y': 2.5, 'z': 0}
             expected_position = {
                 'x': central_position['x'] + relative_position['x'] * swarm_scale,
                 'y': central_position['y'] + relative_position['y'] * swarm_scale,
@@ -122,7 +122,7 @@ def main():
             #     break
         print(f"all_distance: {all_distance}")
         if all_distance < 4:
-            time.sleep(2)
+            time.sleep(0)
             print(f"all_distance: {all_distance}")
             current_goal_index += 1
             if current_goal_index < len(x_list): # less than 4

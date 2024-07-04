@@ -21,7 +21,9 @@
     "vector": "cpp",
     "hash_map": "cpp",
     "hash_set": "cpp",
-    "valarray": "cpp"
+    "valarray": "cpp",
+    "core": "cpp",
+    "sparsecore": "cpp"
   },
   "python.autoComplete.extraPaths": [
     "/home/dwl/Swarm-Control-Course-Additional-Work/devel/lib/python3/dist-packages",

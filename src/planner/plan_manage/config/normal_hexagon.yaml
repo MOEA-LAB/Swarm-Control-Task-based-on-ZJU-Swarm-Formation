@@ -15,9 +15,9 @@ global_goal:
   relative_pos_y1: {x: 0.4956, y: 0.5022, z: 0.0}
   relative_pos_y2: {x: 1.0182, y: 1.0161, z: 0.0}
   relative_pos_y3: {x: -1.0058, y: 1.0277, z: 0.0}
-  relative_pos_y4: {x: 0.000, y: 0.00, z: 0.0}
+  relative_pos_y4: {x: -0.0021, y: -0.6774, z: 0.0}
   relative_pos_y5: {x: 0.0062, y: -1.4715, z: 0.0}
-  relative_pos_y6: {x: -0.0021, y: -0.6774, z: 0.0}
+  relative_pos_y6: {x: 0.000, y: 0.00, z: 0.0}
   
 
   relative_pos_u0: {x: -0.9975, y: 0.4788, z: 0.0}
