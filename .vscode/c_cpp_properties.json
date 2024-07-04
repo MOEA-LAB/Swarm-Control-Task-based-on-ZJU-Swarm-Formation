@@ -1,0 +1,33 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "${default}",
+        "limitSymbolsToIncludedHeaders": false
+      },
+      "includePath": [
+        "/home/dwl/Documents/Swarm-Control-Course-Additional-Work/devel/include/**",
+        "/opt/ros/noetic/include/**",
+        "/home/dwl/Documents/Swarm-Control-Course-Additional-Work/src/planner/plan_manage/include/**",
+        "/home/dwl/Documents/Swarm-Control-Course-Additional-Work/src/uav_simulator/mockamap/include/**",
+        "/home/dwl/Documents/Swarm-Control-Course-Additional-Work/src/planner/path_searching/include/**",
+        "/home/dwl/Documents/Swarm-Control-Course-Additional-Work/src/planner/plan_env/include/**",
+        "/home/dwl/Documents/Swarm-Control-Course-Additional-Work/src/Utils/pose_utils/include/**",
+        "/home/dwl/Documents/Swarm-Control-Course-Additional-Work/src/Utils/quadrotor_msgs/include/**",
+        "/home/dwl/Documents/Swarm-Control-Course-Additional-Work/src/uav_simulator/so3_control/include/**",
+        "/home/dwl/Documents/Swarm-Control-Course-Additional-Work/src/uav_simulator/so3_quadrotor_simulator/include/**",
+        "/home/dwl/Documents/Swarm-Control-Course-Additional-Work/src/planner/swarm_graph/include/**",
+        "/home/dwl/Documents/Swarm-Control-Course-Additional-Work/src/planner/traj_opt/include/**",
+        "/home/dwl/Documents/Swarm-Control-Course-Additional-Work/src/planner/traj_utils/include/**",
+        "/home/dwl/Documents/Swarm-Control-Course-Additional-Work/src/Utils/uav_utils/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS",
+      "intelliSenseMode": "gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "gnu11",
+      "cppStandard": "c++14"
+    }
+  ],
+  "version": 4
+}
