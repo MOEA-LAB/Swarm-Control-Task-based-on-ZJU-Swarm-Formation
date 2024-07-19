@@ -4,29 +4,28 @@ global_goal:
   swarm_central_pos: {x: 25.0, y: 0.0, z: 1.0}
   swarm_scale : 2.5
   relative_pos_s0: {x: 0.000, y: 0.00, z: 0.0}
-  relative_pos_s1: {x: 0.8025, y: 0.7474, z: 0.0}
-  relative_pos_s2: {x: -0.0104, y: 1.5182, z: 0.0}
-  relative_pos_s3: {x: -0.7652, y: 0.7358, z: 0.0}
-  relative_pos_s4: {x: 0.7694, y: -0.7591, z: 0.0}
-  relative_pos_s5: {x: -0.0021, y: -1.4949, z: 0.0}
-  relative_pos_s6: {x: -0.7652, y: -0.7474, z: 0.0}
+  relative_pos_s1: {x: 0.8000, y: 0.7500, z: 0.0}
+  relative_pos_s2: {x: 0.0000, y: 1.5200, z: 0.0}
+  relative_pos_s3: {x: -0.7600, y: 0.7300, z: 0.0}
+  relative_pos_s4: {x: 0.7700, y: -0.7600, z: 0.0}
+  relative_pos_s5: {x: 0.0000, y: -1.4900, z: 0.0}
+  relative_pos_s6: {x: -0.7600, y: -0.800, z: 0.0}
 
-  relative_pos_y0: {x: -0.4915, y: 0.5139, z: 0.0}
-  relative_pos_y1: {x: 0.4956, y: 0.5022, z: 0.0}
-  relative_pos_y2: {x: 1.0182, y: 1.0161, z: 0.0}
-  relative_pos_y3: {x: -1.0058, y: 1.0277, z: 0.0}
-  relative_pos_y4: {x: -0.0021, y: -0.6774, z: 0.0}
-  relative_pos_y5: {x: 0.0062, y: -1.4715, z: 0.0}
+  relative_pos_y0: {x: -0.4900, y: 0.5100, z: 0.0}
+  relative_pos_y1: {x: 0.5000, y: 0.5000, z: 0.0}
+  relative_pos_y2: {x: 1.0200, y: 1.0200, z: 0.0}
+  relative_pos_y3: {x: -1.0000, y: 1.0300, z: 0.0}
+  relative_pos_y4: {x: 0.0000, y: -0.6800, z: 0.0}
+  relative_pos_y5: {x: 0.0000, y: -1.4700, z: 0.0}
   relative_pos_y6: {x: 0.000, y: 0.00, z: 0.0}
-  
 
-  relative_pos_u0: {x: -0.9975, y: 0.4788, z: 0.0}
-  relative_pos_u1: {x: 0.9850, y: 0.5139, z: 0.0}
-  relative_pos_u2: {x: 1.0099, y: 1.5299, z: 0.0}
-  relative_pos_u3: {x: -0.9809, y: 1.5182, z: 0.0}
-  relative_pos_u4: {x: 0.8523, y: -0.9927, z: 0.0}
-  relative_pos_u5: {x: 0.0228, y: -1.2380, z: 0.0}
-  relative_pos_u6: {x: -0.7569, y: -0.9927, z: 0.0}
+  relative_pos_u0: {x: -1.0000, y: 0.4800, z: 0.0}
+  relative_pos_u1: {x: 0.9800, y: 0.5100, z: 0.0}
+  relative_pos_u2: {x: 1.0100, y: 1.5300, z: 0.0}
+  relative_pos_u3: {x: -0.9800, y: 1.5200, z: 0.0}
+  relative_pos_u4: {x: 0.8500, y: -1.0000, z: 0.0}
+  relative_pos_u5: {x: 0.0200, y: -1.2400, z: 0.0}
+  relative_pos_u6: {x: -0.7600, y: -1.0000, z: 0.0}
 
 
 # map_size_x          : 70.0
