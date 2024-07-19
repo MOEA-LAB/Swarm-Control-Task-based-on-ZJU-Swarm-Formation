@@ -9,7 +9,7 @@ global_goal:
   relative_pos_s3: {x: -0.7600, y: 0.7300, z: 0.0}
   relative_pos_s4: {x: 0.7700, y: -0.7600, z: 0.0}
   relative_pos_s5: {x: 0.0000, y: -1.4900, z: 0.0}
-  relative_pos_s6: {x: -0.7600, y: -0.800, z: 0.0}
+  relative_pos_s6: {x: -0.7600, y: -0.7500, z: 0.0}
 
   relative_pos_y0: {x: -0.4900, y: 0.5100, z: 0.0}
   relative_pos_y1: {x: 0.5000, y: 0.5000, z: 0.0}
@@ -26,6 +26,7 @@ global_goal:
   relative_pos_u4: {x: 0.8500, y: -1.0000, z: 0.0}
   relative_pos_u5: {x: 0.0200, y: -1.2400, z: 0.0}
   relative_pos_u6: {x: -0.7600, y: -1.0000, z: 0.0}
+
 
 
 # map_size_x          : 70.0

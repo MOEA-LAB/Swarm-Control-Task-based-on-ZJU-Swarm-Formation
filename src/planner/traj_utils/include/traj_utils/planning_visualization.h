@@ -43,7 +43,7 @@ class PlanningVisualization
   ros::Publisher swarm_formation_visual_pub;
 
   ros::Subscriber turn_sub;
-  int state = 0;
+  int times = 0;
 
   enum FORMATION_TYPE
   {

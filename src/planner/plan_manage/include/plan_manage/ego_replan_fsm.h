@@ -75,7 +75,7 @@ namespace ego_planner
     double swarm_relative_pts_u_[50][3];
     double swarm_relative_pts_s_[50][3];
 
-    int state = 0;
+    int times = 0;
     geometry_msgs::PoseStamped last_goal_msg;
 
     double swarm_scale_;

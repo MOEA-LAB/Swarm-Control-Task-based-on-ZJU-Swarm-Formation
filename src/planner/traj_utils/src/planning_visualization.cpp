@@ -81,15 +81,8 @@ PlanningVisualization::PlanningVisualization(ros::NodeHandle &nh)
 
 void PlanningVisualization::turnCallback(const geometry_msgs::PoseStampedPtr &msg)
 {
-  if (msg->pose.position.x == last_turn_msg.pose.position.x &&
-      msg->pose.position.y == last_turn_msg.pose.position.y)
-  {
-    return;
-  }
-  last_turn_msg = *msg;
-
-  state++;
-  if (state == 1 || state == 3) /* S */
+  times++;
+  if (times == 1 || times == 3) /* S */
   {
     line_size_ = 6;
     line_begin_.resize(line_size_);
@@ -97,7 +90,7 @@ void PlanningVisualization::turnCallback(const geometry_msgs::PoseStampedPtr &ms
     line_begin_ = {1, 2, 3, 0, 4, 5};
     line_end_ = {2, 3, 0, 4, 5, 6};
   }
-  else if (state == 2) /* Y */
+  else if (times == 2) /* Y */
   {
     line_size_ = 6;
     line_begin_.resize(line_size_);
@@ -105,7 +98,7 @@ void PlanningVisualization::turnCallback(const geometry_msgs::PoseStampedPtr &ms
     line_begin_ = {3, 0, 6, 1, 4, 5};
     line_end_ = {0, 6, 1, 2, 6, 4};
   }
-  else if (state == 4) /* U */
+  else if (times == 4) /* U */
   {
     line_size_ = 6;
     line_begin_.resize(line_size_);

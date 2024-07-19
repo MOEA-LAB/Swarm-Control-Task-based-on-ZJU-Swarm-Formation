@@ -664,34 +664,45 @@ void EGOReplanFSM::polyTraj2ROSMsg(traj_utils::PolyTraj &msg)
 void EGOReplanFSM::formationWaypointCallback(const geometry_msgs::PoseStampedPtr &msg)
 {
   if (msg->pose.position.z < -0.1) return;
-  if (last_goal_msg.pose.position.x == msg->pose.position.x &&
-      last_goal_msg.pose.position.y == msg->pose.position.y)
-    return;
-  last_goal_msg = *msg;
+  // if (last_goal_msg.pose.position.x == msg->pose.position.x &&
+  //     last_goal_msg.pose.position.y == msg->pose.position.y)
+  //   return;
+  // last_goal_msg = *msg;
 
   cout << "Triggered!" << endl;
+  cout << "times = " << times << endl;
   init_pt_ = odom_pos_;
 
-  bool success = false;
-  swarm_central_pos_(0) = msg->pose.position.x;
-  swarm_central_pos_(1) = msg->pose.position.y;
-  swarm_central_pos_(2) = 0.5;
+  // swarm_central_pos_(0) = msg->pose.position.x;
+  // swarm_central_pos_(1) = msg->pose.position.y;
+  // swarm_central_pos_(2) = 0.5;
 
   int id = planner_manager_->pp_.drone_id;
-
+  swarm_central_pos_(1) = 0;
+  swarm_central_pos_(2) = 0.5;
   Eigen::Vector3d relative_pos;
-  if (state == 0 || state == 2)
+  if (times == 0)
   {
+    ROS_INFO("1111111111111111111111");
+    swarm_central_pos_(0) = -9;
     relative_pos << swarm_relative_pts_s_[id][0], swarm_relative_pts_s_[id][1],
         swarm_relative_pts_s_[id][2];
   }
-  else if (state == 1)
+  else if (times == 1)
   {
+    swarm_central_pos_(0) = -3;
     relative_pos << swarm_relative_pts_y_[id][0], swarm_relative_pts_y_[id][1],
         swarm_relative_pts_y_[id][2];
   }
-  else if (state == 3)
+  else if (times == 2)
   {
+    swarm_central_pos_(0) = 8;
+    relative_pos << swarm_relative_pts_s_[id][0], swarm_relative_pts_s_[id][1],
+        swarm_relative_pts_s_[id][2];
+  }
+  else if (times == 3)
+  {
+    swarm_central_pos_(0) = 18;
     relative_pos << swarm_relative_pts_u_[id][0], swarm_relative_pts_u_[id][1],
         swarm_relative_pts_u_[id][2];
   }
@@ -699,16 +710,22 @@ void EGOReplanFSM::formationWaypointCallback(const geometry_msgs::PoseStampedPtr
   {
     return;
   }
-  state += 1;
+  times += 1;
   end_pt_ = swarm_central_pos_ + swarm_scale_ * relative_pos;
-
   std::vector<Eigen::Vector3d> one_pt_wps;
   one_pt_wps.push_back(end_pt_);
-
-  success = planner_manager_->planGlobalTrajWaypoints(
+  ROS_INFO("1111111111111111111111");
+  bool success = planner_manager_->planGlobalTrajWaypoints(
       odom_pos_, odom_vel_, Eigen::Vector3d::Zero(), one_pt_wps, Eigen::Vector3d::Zero(),
       Eigen::Vector3d::Zero());
-
+  if (success)
+  {
+    ROS_INFO("SUCCESS");
+  }
+  else
+  {
+    ROS_INFO("NOT SUCCESS");
+  }
   visualization_->displayGoalPoint(end_pt_, Eigen::Vector4d(0, 0.5, 0.5, 1), 0.3, 0);
 
   if (success)
