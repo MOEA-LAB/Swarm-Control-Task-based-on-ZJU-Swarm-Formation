@@ -122,7 +122,7 @@ def main():
             #     print(f"distance: {calculate_distance(odom_data[i], expected_position)}")
             #     break
         print(f"all_distance: {all_distance}")
-        if all_distance <5 and all_distance!=0:
+        if all_distance <4 and all_distance!=0:
             print(f"all_distance: {all_distance}")
             current_goal_index += 1
             if current_goal_index < len(x_list): # less than 4
