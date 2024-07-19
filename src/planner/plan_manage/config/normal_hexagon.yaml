@@ -28,13 +28,13 @@ global_goal:
   relative_pos_s26: {x: 0.7700, y: -0.7600, z: 0.0}
   
 
-  relative_pos_u0: {x: -1.0000, y: 0.4800, z: 0.0}
-  relative_pos_u1: {x: 0.9800, y: 0.5100, z: 0.0}
-  relative_pos_u2: {x: 1.0100, y: 1.5300, z: 0.0}
-  relative_pos_u3: {x: -0.9800, y: 1.5200, z: 0.0}
-  relative_pos_u4: {x: 0.8500, y: -1.0000, z: 0.0}
-  relative_pos_u5: {x: 0.0200, y: -1.2400, z: 0.0}
-  relative_pos_u6: {x: -0.7600, y: -1.0000, z: 0.0}
+  relative_pos_u0: {x: -1.0000, y: 0.500, z: 0.0}
+  relative_pos_u1: {x: 1.000, y: 0.500, z: 0.0}
+  relative_pos_u2: {x: 1.0100, y: 1.500, z: 0.0}
+  relative_pos_u3: {x: -0.9800, y: 1.500, z: 0.0}
+  relative_pos_u4: {x: 0.900, y: -1.0000, z: 0.0}
+  relative_pos_u5: {x: 0.0000, y: -1.2400, z: 0.0}
+  relative_pos_u6: {x: -0.900, y: -1.0000, z: 0.0}
 
 
 
