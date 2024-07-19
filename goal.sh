@@ -27,7 +27,7 @@ pose:
 # Send the first message
 echo "First message sent"
 send_message "$MESSAGE_CONTENT"
-sleep 7
+sleep 6
 
 # Send the second message
 echo "Second message sent"

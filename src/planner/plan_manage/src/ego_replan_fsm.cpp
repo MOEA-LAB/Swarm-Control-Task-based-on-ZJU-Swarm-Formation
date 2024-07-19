@@ -60,12 +60,21 @@ void EGOReplanFSM::init(ros::NodeHandle &nh)
 
   for (int i = 0; i < 7; i++)
   {
-    nh.param("global_goal/relative_pos_s" + to_string(i) + "/x",
-             swarm_relative_pts_s_[i][0], -1.0);
-    nh.param("global_goal/relative_pos_s" + to_string(i) + "/y",
-             swarm_relative_pts_s_[i][1], -1.0);
-    nh.param("global_goal/relative_pos_s" + to_string(i) + "/z",
-             swarm_relative_pts_s_[i][2], -1.0);
+    nh.param("global_goal/relative_pos_s1" + to_string(i) + "/x",
+             swarm_relative_pts_s1_[i][0], -1.0);
+    nh.param("global_goal/relative_pos_s1" + to_string(i) + "/y",
+             swarm_relative_pts_s1_[i][1], -1.0);
+    nh.param("global_goal/relative_pos_s1" + to_string(i) + "/z",
+             swarm_relative_pts_s1_[i][2], -1.0);
+  }
+  for (int i = 0; i < 7; i++)
+  {
+    nh.param("global_goal/relative_pos_s2" + to_string(i) + "/x",
+             swarm_relative_pts_s2_[i][0], -1.0);
+    nh.param("global_goal/relative_pos_s2" + to_string(i) + "/y",
+             swarm_relative_pts_s2_[i][1], -1.0);
+    nh.param("global_goal/relative_pos_s2" + to_string(i) + "/z",
+             swarm_relative_pts_s2_[i][2], -1.0);
   }
 
   for (int i = 0; i < 7; i++)
@@ -685,8 +694,8 @@ void EGOReplanFSM::formationWaypointCallback(const geometry_msgs::PoseStampedPtr
   {
     ROS_INFO("1111111111111111111111");
     swarm_central_pos_(0) = -9;
-    relative_pos << swarm_relative_pts_s_[id][0], swarm_relative_pts_s_[id][1],
-        swarm_relative_pts_s_[id][2];
+    relative_pos << swarm_relative_pts_s1_[id][0], swarm_relative_pts_s1_[id][1],
+        swarm_relative_pts_s1_[id][2];
   }
   else if (times == 1)
   {
@@ -697,8 +706,8 @@ void EGOReplanFSM::formationWaypointCallback(const geometry_msgs::PoseStampedPtr
   else if (times == 2)
   {
     swarm_central_pos_(0) = 8;
-    relative_pos << swarm_relative_pts_s_[id][0], swarm_relative_pts_s_[id][1],
-        swarm_relative_pts_s_[id][2];
+    relative_pos << swarm_relative_pts_s2_[id][0], swarm_relative_pts_s2_[id][1],
+        swarm_relative_pts_s2_[id][2];
   }
   else if (times == 3)
   {

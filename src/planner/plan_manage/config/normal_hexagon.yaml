@@ -3,13 +3,13 @@
 global_goal:
   swarm_central_pos: {x: 25.0, y: 0.0, z: 1.0}
   swarm_scale : 2.5
-  relative_pos_s0: {x: 0.000, y: 0.00, z: 0.0}
-  relative_pos_s1: {x: 0.8000, y: 0.7500, z: 0.0}
-  relative_pos_s2: {x: 0.0000, y: 1.5200, z: 0.0}
-  relative_pos_s3: {x: -0.7600, y: 0.7300, z: 0.0}
-  relative_pos_s4: {x: 0.7700, y: -0.7600, z: 0.0}
-  relative_pos_s5: {x: 0.0000, y: -1.4900, z: 0.0}
-  relative_pos_s6: {x: -0.7600, y: -0.7500, z: 0.0}
+  relative_pos_s10: {x: 0.000, y: 0.00, z: 0.0}
+  relative_pos_s11: {x: 0.8000, y: 0.7500, z: 0.0}
+  relative_pos_s12: {x: 0.0000, y: 1.5200, z: 0.0}
+  relative_pos_s13: {x: -0.7600, y: 0.7300, z: 0.0}
+  relative_pos_s14: {x: 0.7700, y: -0.7600, z: 0.0}
+  relative_pos_s15: {x: 0.0000, y: -1.4900, z: 0.0}
+  relative_pos_s16: {x: -0.7600, y: -0.7500, z: 0.0}
 
   relative_pos_y0: {x: -0.4900, y: 0.5100, z: 0.0}
   relative_pos_y1: {x: 0.5000, y: 0.5000, z: 0.0}
@@ -18,6 +18,15 @@ global_goal:
   relative_pos_y4: {x: 0.0000, y: -0.6800, z: 0.0}
   relative_pos_y5: {x: 0.0000, y: -1.4700, z: 0.0}
   relative_pos_y6: {x: 0.000, y: 0.00, z: 0.0}
+
+  relative_pos_s20: {x: 0.000, y: 0.00, z: 0.0}
+  relative_pos_s21: {x: 0.8000, y: 0.7500, z: 0.0}
+  relative_pos_s22: {x: 0.0000, y: 1.5200, z: 0.0}
+  relative_pos_s23: {x: -0.7600, y: 0.7300, z: 0.0}
+  relative_pos_s24: {x: -0.7600, y: -0.7500, z: 0.0}
+  relative_pos_s25: {x: 0.0000, y: -1.4900, z: 0.0}
+  relative_pos_s26: {x: 0.7700, y: -0.7600, z: 0.0}
+  
 
   relative_pos_u0: {x: -1.0000, y: 0.4800, z: 0.0}
   relative_pos_u1: {x: 0.9800, y: 0.5100, z: 0.0}
