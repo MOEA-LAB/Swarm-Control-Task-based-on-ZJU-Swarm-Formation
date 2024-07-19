@@ -3,7 +3,7 @@
 **step 1：compile**
 
 ```shell
-git clone git@github.com:MOEA-LAB/Swarm-Control-Course-Additional-Work.git
+git clone -b v2.0 git@github.com:MOEA-LAB/Swarm-Control-Course-Additional-Work.git
 cd Swarm-Control-Course-Additional-Work
 catkin_make
 ```
@@ -22,11 +22,7 @@ catkin_make
 
 **step4: publish goal**
 
-```python
-sudo chmod +x goal.py
-python3 goal.py
+```shell
+./publish.sh
 ```
 
-
-
-****
