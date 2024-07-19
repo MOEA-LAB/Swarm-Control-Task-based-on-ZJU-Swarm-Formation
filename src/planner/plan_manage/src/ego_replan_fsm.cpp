@@ -680,17 +680,22 @@ void EGOReplanFSM::formationWaypointCallback(const geometry_msgs::PoseStampedPtr
   int id = planner_manager_->pp_.drone_id;
 
   Eigen::Vector3d relative_pos;
-  if (state == 0 || state == 2)
+  if (state == 0)
   {
     relative_pos << swarm_relative_pts_s_[id][0], swarm_relative_pts_s_[id][1],
         swarm_relative_pts_s_[id][2];
   }
-  else if (state == 1)
+  else if (state == 1 || state == 2)
   {
     relative_pos << swarm_relative_pts_y_[id][0], swarm_relative_pts_y_[id][1],
         swarm_relative_pts_y_[id][2];
   }
-  else if (state == 3)
+  else if (state == 3 || state == 4)
+  {
+    relative_pos << swarm_relative_pts_s_[id][0], swarm_relative_pts_s_[id][1],
+        swarm_relative_pts_s_[id][2];
+  }
+  else if (state == 5 || state == 6)
   {
     relative_pos << swarm_relative_pts_u_[id][0], swarm_relative_pts_u_[id][1],
         swarm_relative_pts_u_[id][2];

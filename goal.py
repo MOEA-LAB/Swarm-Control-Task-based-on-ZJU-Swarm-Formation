@@ -52,7 +52,8 @@ def main():
     relative_positions_u = [config['global_goal'][f'relative_pos_u{i}'] for i in range(7)]
     relative_positions = [relative_positions_s, relative_positions_y, relative_positions_s, relative_positions_u]
 
-    x_list = [-9, 0, 12, 22]
+    x_list = [-9, -5, 2, 8,15,18,25]
+    shape = [0,1,1,2,2,3,3]
     goal_publisher = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=1)
 
     odom_data = [{} for _ in range(7)]
@@ -78,7 +79,7 @@ def main():
     while True:
         occupied = False
         for i in range(7):
-            relative_position = relative_positions[current_goal_index][i]
+            relative_position = relative_positions[shape[current_goal_index]][i]
             central_position = {'x': new_goal.pose.position.x, 'y': 2.5, 'z': 0}
             expected_position = {
                 'x': central_position['x'] + relative_position['x'] * swarm_scale,
@@ -107,7 +108,7 @@ def main():
                 all_within_threshold = False
                 break
 
-            relative_position = relative_positions[current_goal_index][i]
+            relative_position = relative_positions[shape[current_goal_index]][i]
             central_position = {'x': new_goal.pose.position.x, 'y': 0, 'z': 0}
             expected_position = {
                 'x': central_position['x'] + relative_position['x'] * swarm_scale,
@@ -121,7 +122,7 @@ def main():
             #     print(f"distance: {calculate_distance(odom_data[i], expected_position)}")
             #     break
         print(f"all_distance: {all_distance}")
-        if all_distance < 4:
+        if all_distance <5 and all_distance!=0:
             print(f"all_distance: {all_distance}")
             current_goal_index += 1
             if current_goal_index < len(x_list): # less than 4
@@ -134,7 +135,7 @@ def main():
                 while True:
                     occupied = False
                     for i in range(7):
-                        relative_position = relative_positions[current_goal_index % 4][i]
+                        relative_position = relative_positions[shape[current_goal_index%7]][i]
                         central_position = {'x': new_goal.pose.position.x, 'y': 0, 'z': 0}
                         expected_position = {
                             'x': central_position['x'] + relative_position['x'] * swarm_scale,
@@ -145,7 +146,6 @@ def main():
                         if check_occupied(pointcloud_data['points'], expected_position):
                             occupied = True
                             break
-
                     if occupied:
                         new_goal.pose.position.x += 0.3
                         rospy.loginfo(f"Updated goal x due to occupation: x = {new_goal.pose.position.x}")
