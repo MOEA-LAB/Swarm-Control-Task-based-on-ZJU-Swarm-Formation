@@ -52,7 +52,7 @@ def main():
     relative_positions_u = [config['global_goal'][f'relative_pos_u{i}'] for i in range(7)]
     relative_positions = [relative_positions_s, relative_positions_y, relative_positions_s, relative_positions_u]
 
-    x_list = [-9, -5, 2, 8,15,18,25]
+    x_list = [-9, -5, 2, 8,15,22,25]
     shape = [0,1,1,2,2,3,3]
     goal_publisher = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=1)
 
