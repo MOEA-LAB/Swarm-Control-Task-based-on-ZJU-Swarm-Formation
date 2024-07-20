@@ -4,7 +4,7 @@
   "C_Cpp.clang_format_style": "{ BasedOnStyle: Google, IndentWidth: 2, ColumnLimit: 90, BreakBeforeBraces: Allman }",
   "editor.tabSize": 2,
   "[cpp]": {
-      "editor.defaultFormatter": "ms-vscode.cpptools"
+    "editor.defaultFormatter": "ms-vscode.cpptools"
   },
   "editor.rulers": [100],
   "editor.wordWrap": "off",
@@ -23,9 +23,16 @@
     "hash_set": "cpp",
     "valarray": "cpp",
     "core": "cpp",
-    "sparsecore": "cpp"
+    "sparsecore": "cpp",
+    "__locale": "cpp",
+    "locale": "cpp",
+    "bitset": "cpp"
   },
   "python.autoComplete.extraPaths": [
+    "/home/dwl/Swarm-Control-Course-Additional-Work/devel/lib/python3/dist-packages",
+    "/opt/ros/noetic/lib/python3/dist-packages"
+  ],
+  "python.analysis.extraPaths": [
     "/home/dwl/Swarm-Control-Course-Additional-Work/devel/lib/python3/dist-packages",
     "/opt/ros/noetic/lib/python3/dist-packages"
   ]

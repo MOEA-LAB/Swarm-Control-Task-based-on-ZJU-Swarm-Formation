@@ -47,102 +47,140 @@ void EGOReplanFSM::init(ros::NodeHandle &nh)
     nh.param("fsm/target" + to_string(i) + "_y", goalpoints_[i][1], -1.0);
     nh.param("fsm/target" + to_string(i) + "_z", goalpoints_[i][2], -1.0);
   }
+  swarm_relative_pts_y_[0][0] = -0.4915;
+  swarm_relative_pts_y_[0][1] = 0.5139;
+  swarm_relative_pts_y_[0][2] = 0.0;
+  swarm_relative_pts_y_[1][0] = 0.4956;
+  swarm_relative_pts_y_[1][1] = 0.5022;
+  swarm_relative_pts_y_[1][2] = 0.0;
+  swarm_relative_pts_y_[2][0] = 1.0182;
+  swarm_relative_pts_y_[2][1] = 1.0161;
+  swarm_relative_pts_y_[2][2] = 0.0;
+  swarm_relative_pts_y_[3][0] = -1.0058;
+  swarm_relative_pts_y_[3][1] = 1.0277;
+  swarm_relative_pts_y_[3][2] = 0.0;
+  swarm_relative_pts_y_[4][0] = -0.0021;
+  swarm_relative_pts_y_[4][1] = -0.6774;
+  swarm_relative_pts_y_[4][2] = 0.0;
+  swarm_relative_pts_y_[5][0] = 0.0062;
+  swarm_relative_pts_y_[5][1] = -1.4715;
+  swarm_relative_pts_y_[5][2] = 0.0;
+  swarm_relative_pts_y_[6][0] = 0.000;
+  swarm_relative_pts_y_[6][1] = 0.00;
+  swarm_relative_pts_y_[6][2] = 0.0;
 
-  for (int i = 0; i < 7; i++)
+  // Relative positions for 's'
+  swarm_relative_pts_s_[0][0] = 0.000;
+  swarm_relative_pts_s_[0][1] = 0.00;
+  swarm_relative_pts_s_[0][2] = 0.0;
+  swarm_relative_pts_s_[1][0] = 0.8025;
+  swarm_relative_pts_s_[1][1] = 0.7474;
+  swarm_relative_pts_s_[1][2] = 0.0;
+  swarm_relative_pts_s_[2][0] = -0.0104;
+  swarm_relative_pts_s_[2][1] = 1.5182;
+  swarm_relative_pts_s_[2][2] = 0.0;
+  swarm_relative_pts_s_[3][0] = -0.7652;
+  swarm_relative_pts_s_[3][1] = 0.7358;
+  swarm_relative_pts_s_[3][2] = 0.0;
+  swarm_relative_pts_s_[4][0] = 0.7694;
+  swarm_relative_pts_s_[4][1] = -0.7591;
+  swarm_relative_pts_s_[4][2] = 0.0;
+  swarm_relative_pts_s_[5][0] = -0.0021;
+  swarm_relative_pts_s_[5][1] = -1.4949;
+  swarm_relative_pts_s_[5][2] = 0.0;
+  swarm_relative_pts_s_[6][0] = -0.7652;
+  swarm_relative_pts_s_[6][1] = -0.7474;
+  swarm_relative_pts_s_[6][2] = 0.0;
+
+  // Relative positions for 'u'
+  swarm_relative_pts_u_[0][0] = -0.9975;
+  swarm_relative_pts_u_[0][1] = 0.4788;
+  swarm_relative_pts_u_[0][2] = 0.0;
+  swarm_relative_pts_u_[1][0] = 0.9850;
+  swarm_relative_pts_u_[1][1] = 0.5139;
+  swarm_relative_pts_u_[1][2] = 0.0;
+  swarm_relative_pts_u_[2][0] = 1.0099;
+  swarm_relative_pts_u_[2][1] = 1.5299;
+  swarm_relative_pts_u_[2][2] = 0.0;
+  swarm_relative_pts_u_[3][0] = -0.9809;
+  swarm_relative_pts_u_[3][1] = 1.5182;
+  swarm_relative_pts_u_[3][2] = 0.0;
+  swarm_relative_pts_u_[4][0] = 0.8523;
+  swarm_relative_pts_u_[4][1] = -0.9927;
+  swarm_relative_pts_u_[4][2] = 0.0;
+  swarm_relative_pts_u_[5][0] = 0.0228;
+  swarm_relative_pts_u_[5][1] = -1.2380;
+  swarm_relative_pts_u_[5][2] = 0.0;
+  swarm_relative_pts_u_[6][0] = -0.7569;
+  swarm_relative_pts_u_[6][1] = -0.9927;
+  swarm_relative_pts_u_[6][2] = 0.0;
+}
+
+nh.param("global_goal/swarm_scale", swarm_scale_, 1.0);
+
+/* initialize main modules */
+visualization_.reset(new PlanningVisualization(nh));
+planner_manager_.reset(new EGOPlannerManager);
+planner_manager_->initPlanModules(nh, visualization_);
+planner_manager_->deliverTrajToOptimizer();  // store trajectories
+planner_manager_->setDroneIdtoOpt();
+
+/* callback */
+exec_timer_ = nh.createTimer(ros::Duration(0.01), &EGOReplanFSM::execFSMCallback, this);
+safety_timer_ =
+    nh.createTimer(ros::Duration(0.05), &EGOReplanFSM::checkCollisionCallback, this);
+
+odom_sub_ = nh.subscribe("odom_world", 1, &EGOReplanFSM::odometryCallback, this);
+
+broadcast_ploytraj_pub_ =
+    nh.advertise<traj_utils::PolyTraj>("planning/broadcast_traj_send", 10);
+broadcast_ploytraj_sub_ = nh.subscribe<traj_utils::PolyTraj>(
+    "planning/broadcast_traj_recv", 100, &EGOReplanFSM::RecvBroadcastPolyTrajCallback,
+    this, ros::TransportHints().tcpNoDelay());
+
+poly_traj_pub_ = nh.advertise<traj_utils::PolyTraj>("planning/trajectory", 10);
+data_disp_pub_ = nh.advertise<traj_utils::DataDisp>("planning/data_display", 100);
+
+start_pub_ = nh.advertise<std_msgs::Bool>("planning/start", 1);
+reached_pub_ = nh.advertise<std_msgs::Bool>("planning/finish", 1);
+
+result_file_.open(result_fn_, ios::app);
+
+if (target_type_ == TARGET_TYPE::MANUAL_TARGET)
+{
+  waypoint_sub_ = nh.subscribe("/goal", 1, &EGOReplanFSM::waypointCallback, this);
+}
+else if (target_type_ == TARGET_TYPE::PRESET_TARGET)
+{
+  trigger_sub_ =
+      nh.subscribe("/traj_start_trigger", 1, &EGOReplanFSM::triggerCallback, this);
+  ROS_INFO("Wait for 2 second.");
+  int count = 0;
+  while (ros::ok() && count++ < 2000)
   {
-    nh.param("global_goal/relative_pos_y" + to_string(i) + "/x",
-             swarm_relative_pts_y_[i][0], -1.0);
-    nh.param("global_goal/relative_pos_y" + to_string(i) + "/y",
-             swarm_relative_pts_y_[i][1], -1.0);
-    nh.param("global_goal/relative_pos_y" + to_string(i) + "/z",
-             swarm_relative_pts_y_[i][2], -1.0);
+    ros::spinOnce();
+    ros::Duration(0.001).sleep();
   }
+  ROS_WARN("Waiting for trigger from [n3ctrl] from RC");
 
-  for (int i = 0; i < 7; i++)
+  while (ros::ok() && (!have_odom_ || !have_trigger_))
   {
-    nh.param("global_goal/relative_pos_s" + to_string(i) + "/x",
-             swarm_relative_pts_s_[i][0], -1.0);
-    nh.param("global_goal/relative_pos_s" + to_string(i) + "/y",
-             swarm_relative_pts_s_[i][1], -1.0);
-    nh.param("global_goal/relative_pos_s" + to_string(i) + "/z",
-             swarm_relative_pts_s_[i][2], -1.0);
+    ros::spinOnce();
+    ros::Duration(0.001).sleep();
   }
-
-  for (int i = 0; i < 7; i++)
-  {
-    nh.param("global_goal/relative_pos_u" + to_string(i) + "/x",
-             swarm_relative_pts_u_[i][0], -1.0);
-    nh.param("global_goal/relative_pos_u" + to_string(i) + "/y",
-             swarm_relative_pts_u_[i][1], -1.0);
-    nh.param("global_goal/relative_pos_u" + to_string(i) + "/z",
-             swarm_relative_pts_u_[i][2], -1.0);
-  }
-
-  nh.param("global_goal/swarm_scale", swarm_scale_, 1.0);
-
-  /* initialize main modules */
-  visualization_.reset(new PlanningVisualization(nh));
-  planner_manager_.reset(new EGOPlannerManager);
-  planner_manager_->initPlanModules(nh, visualization_);
-  planner_manager_->deliverTrajToOptimizer();  // store trajectories
-  planner_manager_->setDroneIdtoOpt();
-
-  /* callback */
-  exec_timer_ = nh.createTimer(ros::Duration(0.01), &EGOReplanFSM::execFSMCallback, this);
-  safety_timer_ =
-      nh.createTimer(ros::Duration(0.05), &EGOReplanFSM::checkCollisionCallback, this);
-
-  odom_sub_ = nh.subscribe("odom_world", 1, &EGOReplanFSM::odometryCallback, this);
-
-  broadcast_ploytraj_pub_ =
-      nh.advertise<traj_utils::PolyTraj>("planning/broadcast_traj_send", 10);
-  broadcast_ploytraj_sub_ = nh.subscribe<traj_utils::PolyTraj>(
-      "planning/broadcast_traj_recv", 100, &EGOReplanFSM::RecvBroadcastPolyTrajCallback,
-      this, ros::TransportHints().tcpNoDelay());
-
-  poly_traj_pub_ = nh.advertise<traj_utils::PolyTraj>("planning/trajectory", 10);
-  data_disp_pub_ = nh.advertise<traj_utils::DataDisp>("planning/data_display", 100);
-
-  start_pub_ = nh.advertise<std_msgs::Bool>("planning/start", 1);
-  reached_pub_ = nh.advertise<std_msgs::Bool>("planning/finish", 1);
-
-  result_file_.open(result_fn_, ios::app);
-
-  if (target_type_ == TARGET_TYPE::MANUAL_TARGET)
-  {
-    waypoint_sub_ = nh.subscribe("/goal", 1, &EGOReplanFSM::waypointCallback, this);
-  }
-  else if (target_type_ == TARGET_TYPE::PRESET_TARGET)
-  {
-    trigger_sub_ =
-        nh.subscribe("/traj_start_trigger", 1, &EGOReplanFSM::triggerCallback, this);
-    ROS_INFO("Wait for 2 second.");
-    int count = 0;
-    while (ros::ok() && count++ < 2000)
-    {
-      ros::spinOnce();
-      ros::Duration(0.001).sleep();
-    }
-    ROS_WARN("Waiting for trigger from [n3ctrl] from RC");
-
-    while (ros::ok() && (!have_odom_ || !have_trigger_))
-    {
-      ros::spinOnce();
-      ros::Duration(0.001).sleep();
-    }
-    std_msgs::Bool flag_msg;
-    flag_msg.data = true;
-    planner_manager_->global_start_time_ = ros::Time::now();
-    planner_manager_->start_flag_ = true;
-    start_pub_.publish(flag_msg);
-    planGlobalTrajbyGivenWps();
-  }
-  else if (target_type_ == TARGET_TYPE::SWARM_MANUAL_TARGET)
-  {
-    central_goal = nh.subscribe("/move_base_simple/goal", 1,
-                                &EGOReplanFSM::formationWaypointCallback, this);
-  }
-  cout << "Wrong target_type_ value! target_type_=" << target_type_ << endl;
+  std_msgs::Bool flag_msg;
+  flag_msg.data = true;
+  planner_manager_->global_start_time_ = ros::Time::now();
+  planner_manager_->start_flag_ = true;
+  start_pub_.publish(flag_msg);
+  planGlobalTrajbyGivenWps();
+}
+else if (target_type_ == TARGET_TYPE::SWARM_MANUAL_TARGET)
+{
+  central_goal = nh.subscribe("/move_base_simple/goal", 1,
+                              &EGOReplanFSM::formationWaypointCallback, this);
+}
+cout << "Wrong target_type_ value! target_type_=" << target_type_ << endl;
 }
 
 void EGOReplanFSM::execFSMCallback(const ros::TimerEvent &e)
