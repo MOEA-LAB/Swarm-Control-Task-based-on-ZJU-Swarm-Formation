@@ -47,73 +47,35 @@ void EGOReplanFSM::init(ros::NodeHandle &nh)
     nh.param("fsm/target" + to_string(i) + "_y", goalpoints_[i][1], -1.0);
     nh.param("fsm/target" + to_string(i) + "_z", goalpoints_[i][2], -1.0);
   }
-  swarm_relative_pts_y_[0][0] = -0.4915;
-  swarm_relative_pts_y_[0][1] = 0.5139;
-  swarm_relative_pts_y_[0][2] = 0.0;
-  swarm_relative_pts_y_[1][0] = 0.4956;
-  swarm_relative_pts_y_[1][1] = 0.5022;
-  swarm_relative_pts_y_[1][2] = 0.0;
-  swarm_relative_pts_y_[2][0] = 1.0182;
-  swarm_relative_pts_y_[2][1] = 1.0161;
-  swarm_relative_pts_y_[2][2] = 0.0;
-  swarm_relative_pts_y_[3][0] = -1.0058;
-  swarm_relative_pts_y_[3][1] = 1.0277;
-  swarm_relative_pts_y_[3][2] = 0.0;
-  swarm_relative_pts_y_[4][0] = -0.0021;
-  swarm_relative_pts_y_[4][1] = -0.6774;
-  swarm_relative_pts_y_[4][2] = 0.0;
-  swarm_relative_pts_y_[5][0] = 0.0062;
-  swarm_relative_pts_y_[5][1] = -1.4715;
-  swarm_relative_pts_y_[5][2] = 0.0;
-  swarm_relative_pts_y_[6][0] = 0.000;
-  swarm_relative_pts_y_[6][1] = 0.00;
-  swarm_relative_pts_y_[6][2] = 0.0;
+  for (int i = 0; i < 7; i++)
+  {
+    nh.param("global_goal/relative_pos_y" + to_string(i) + "/x",
+             swarm_relative_pts_y_[i][0], -1.0);
+    nh.param("global_goal/relative_pos_y" + to_string(i) + "/y",
+             swarm_relative_pts_y_[i][1], -1.0);
+    nh.param("global_goal/relative_pos_y" + to_string(i) + "/z",
+             swarm_relative_pts_y_[i][2], -1.0);
+  }
 
-  // Relative positions for 's'
-  swarm_relative_pts_s_[0][0] = 0.000;
-  swarm_relative_pts_s_[0][1] = 0.00;
-  swarm_relative_pts_s_[0][2] = 0.0;
-  swarm_relative_pts_s_[1][0] = 0.8025;
-  swarm_relative_pts_s_[1][1] = 0.7474;
-  swarm_relative_pts_s_[1][2] = 0.0;
-  swarm_relative_pts_s_[2][0] = -0.0104;
-  swarm_relative_pts_s_[2][1] = 1.5182;
-  swarm_relative_pts_s_[2][2] = 0.0;
-  swarm_relative_pts_s_[3][0] = -0.7652;
-  swarm_relative_pts_s_[3][1] = 0.7358;
-  swarm_relative_pts_s_[3][2] = 0.0;
-  swarm_relative_pts_s_[4][0] = 0.7694;
-  swarm_relative_pts_s_[4][1] = -0.7591;
-  swarm_relative_pts_s_[4][2] = 0.0;
-  swarm_relative_pts_s_[5][0] = -0.0021;
-  swarm_relative_pts_s_[5][1] = -1.4949;
-  swarm_relative_pts_s_[5][2] = 0.0;
-  swarm_relative_pts_s_[6][0] = -0.7652;
-  swarm_relative_pts_s_[6][1] = -0.7474;
-  swarm_relative_pts_s_[6][2] = 0.0;
+  for (int i = 0; i < 7; i++)
+  {
+    nh.param("global_goal/relative_pos_s" + to_string(i) + "/x",
+             swarm_relative_pts_s_[i][0], -1.0);
+    nh.param("global_goal/relative_pos_s" + to_string(i) + "/y",
+             swarm_relative_pts_s_[i][1], -1.0);
+    nh.param("global_goal/relative_pos_s" + to_string(i) + "/z",
+             swarm_relative_pts_s_[i][2], -1.0);
+  }
 
-  // Relative positions for 'u'
-  swarm_relative_pts_u_[0][0] = -0.9975;
-  swarm_relative_pts_u_[0][1] = 0.4788;
-  swarm_relative_pts_u_[0][2] = 0.0;
-  swarm_relative_pts_u_[1][0] = 0.9850;
-  swarm_relative_pts_u_[1][1] = 0.5139;
-  swarm_relative_pts_u_[1][2] = 0.0;
-  swarm_relative_pts_u_[2][0] = 1.0099;
-  swarm_relative_pts_u_[2][1] = 1.5299;
-  swarm_relative_pts_u_[2][2] = 0.0;
-  swarm_relative_pts_u_[3][0] = -0.9809;
-  swarm_relative_pts_u_[3][1] = 1.5182;
-  swarm_relative_pts_u_[3][2] = 0.0;
-  swarm_relative_pts_u_[4][0] = 0.8523;
-  swarm_relative_pts_u_[4][1] = -0.9927;
-  swarm_relative_pts_u_[4][2] = 0.0;
-  swarm_relative_pts_u_[5][0] = 0.0228;
-  swarm_relative_pts_u_[5][1] = -1.2380;
-  swarm_relative_pts_u_[5][2] = 0.0;
-  swarm_relative_pts_u_[6][0] = -0.7569;
-  swarm_relative_pts_u_[6][1] = -0.9927;
-  swarm_relative_pts_u_[6][2] = 0.0;
+  for (int i = 0; i < 7; i++)
+  {
+    nh.param("global_goal/relative_pos_u" + to_string(i) + "/x",
+             swarm_relative_pts_u_[i][0], -1.0);
+    nh.param("global_goal/relative_pos_u" + to_string(i) + "/y",
+             swarm_relative_pts_u_[i][1], -1.0);
+    nh.param("global_goal/relative_pos_u" + to_string(i) + "/z",
+             swarm_relative_pts_u_[i][2], -1.0);
+  }
 
   nh.param("global_goal/swarm_scale", swarm_scale_, 1.0);
 
