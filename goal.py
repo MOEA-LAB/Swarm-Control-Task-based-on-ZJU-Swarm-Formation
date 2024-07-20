@@ -52,7 +52,7 @@ def main():
     relative_positions_u = [config['global_goal'][f'relative_pos_u{i}'] for i in range(7)]
     relative_positions = [relative_positions_s, relative_positions_y, relative_positions_s, relative_positions_u]
 
-    x_list = [-9, 0, 12, 22]
+    x_list = [-5.9, -2, 8, 26]
     goal_publisher = rospy.Publisher('/move_base_simple/goal', PoseStamped, queue_size=1)
 
     odom_data = [{} for _ in range(7)]
@@ -121,7 +121,7 @@ def main():
             #     print(f"distance: {calculate_distance(odom_data[i], expected_position)}")
             #     break
         print(f"all_distance: {all_distance}")
-        if all_distance < 4:
+        if all_distance < 4.5 and all_distance!=0:
             print(f"all_distance: {all_distance}")
             current_goal_index += 1
             if current_goal_index < len(x_list): # less than 4

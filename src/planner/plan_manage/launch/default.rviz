@@ -7,6 +7,7 @@ Panels:
         - /Global Options1
         - /Status1
         - /simulation_map1/Autocompute Value Bounds1
+        - /drone01
         - /drone01/Planning1
         - /drone01/Planning1/goal_point1
         - /drone01/Planning1/global_path1
@@ -1722,7 +1723,7 @@ Window Geometry:
   Tool Properties:
     collapsed: false
   Width: 1955
-  X: 605
+  X: 439
   Y: 27
   depth:
     collapsed: false
