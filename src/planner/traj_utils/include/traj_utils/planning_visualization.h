@@ -91,7 +91,7 @@ class PlanningVisualization
   void swarmGraphVisulCallback(const ros::TimerEvent &e);
   void benchmarkCallback(const ros::TimerEvent &e);
 
-  void turnCallback(const geometry_msgs::PoseStampedPtr &msg);
+  void mycallback(const geometry_msgs::PoseStampedPtr &msg);
 
  public:
   PlanningVisualization(/* args */) {}

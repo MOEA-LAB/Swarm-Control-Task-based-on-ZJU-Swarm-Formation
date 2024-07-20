@@ -73,13 +73,13 @@ PlanningVisualization::PlanningVisualization(ros::NodeHandle &nh)
   if (drone_id_ == 0)
   {
     turn_sub = nh.subscribe("/move_base_simple/goal", 1,
-                            &PlanningVisualization::turnCallback, this);
+                            &PlanningVisualization::mycallback, this);
     swarm_graph_visual_timer_ = nh.createTimer(
         ros::Duration(0.01), &PlanningVisualization::swarmGraphVisulCallback, this);
   }
 }
 
-void PlanningVisualization::turnCallback(const geometry_msgs::PoseStampedPtr &msg)
+void PlanningVisualization::mycallback(const geometry_msgs::PoseStampedPtr &msg)
 {
   if (msg->pose.position.x == last_turn_msg.pose.position.x &&
       msg->pose.position.y == last_turn_msg.pose.position.y)

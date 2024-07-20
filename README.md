@@ -152,7 +152,7 @@ swarm_relative_pts_y_[0][0] = -0.4915;
 
 
 
-为了我每次点一次终点，他就可以分别以S,Y,S,U的形状飞行，那我就设定一个计数器`state`，然后第一次点击的时候就飞S，第二次点击就飞Y，第三次就飞S，第四次就飞U，那么我的`formationWaypointCallback`函数就加一个这个步骤：
+为了我每次点一次终点，他就可以分别以S,Y,S,U的形状飞行，那我就设定一个计数器`state`，第一次接收到goal的时候就飞S，第二次接收到goal就飞Y，第三次接收到goal就飞S，第四次接收到goal就飞U，那么我的`formationWaypointCallback`函数就加一个这个步骤：
 
 ```cpp
 if (state == 0 || state == 2)
@@ -180,9 +180,9 @@ else
 
 
 
-然后为了方便发布指令，不用每次都点击四次，那我就使用`goal.py`作为一个trigger，当检测到所有的飞机都快到达指定位置的时候，就发送下一个目标，其实就是往move_base/goal话题里面发送一个ros消息（这里找gpt分析一下geometry_msgs/PoseStamped的消息类型）。然后利用python发送一个消息之后，无人机就会进行下一次的规划，并且改变队形。
+然后为了方便发布指令，不用每次都点击四次，那我就使用`goal.py`作为一个trigger，当检测到所有的飞机都快到达指定位置的时候，就发送下一个目标，其实就是往move_base_simple/goal话题里面发送一个ros消息（这里找gpt分析一下geometry_msgs/PoseStamped的消息类型）。然后利用python发送一个消息之后，无人机就会进行下一次的规划，并且改变队形。
 
-最后我发现改变了编队但是连线并没有修改，那么经过一阵搜索之后，在`src/planner/traj_utils/src/planning_visualization.cpp`找到了连线的代码，在`turnCallback`函数中，同理增加一个计数器之后state之后，根据我所给定的连线规则连线，即可实现。
+最后我发现改变了编队但是连线并没有修改，那么经过一阵搜索之后，在`src/planner/traj_utils/src/planning_visualization.cpp`找到了连线的代码，我设计了一个`mycallback`函数，订阅`/move_base_simple/goal`的消息，用来每次接收到目标点之后更改连线规则，同理也是要增加一个计数器之后state之后，根据我所给定的连线规则连线，即可实现。
 
 ```cpp
 state++;
