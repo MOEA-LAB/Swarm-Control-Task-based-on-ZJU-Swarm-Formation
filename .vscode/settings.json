@@ -30,7 +30,8 @@
     "map": "cpp",
     "set": "cpp",
     "__locale": "cpp",
-    "optional": "cpp"
+    "optional": "cpp",
+    "algorithm": "cpp"
   },
   "python.autoComplete.extraPaths": [
     "/home/dwl/Swarm-Control-Course-Additional-Work/devel/lib/python3/dist-packages",
