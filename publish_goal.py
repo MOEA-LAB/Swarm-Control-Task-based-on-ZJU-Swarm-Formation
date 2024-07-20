@@ -47,9 +47,9 @@ def main():
     config = read_yaml(file_path)
 
     swarm_scale = config['global_goal']['swarm_scale']
-    relative_positions_s = [config['global_goal'][f'relative_pos_s{i}'] for i in range(7)]
-    relative_positions_y = [config['global_goal'][f'relative_pos_y{i}'] for i in range(7)]
-    relative_positions_u = [config['global_goal'][f'relative_pos_u{i}'] for i in range(7)]
+    relative_positions_s = [config['global_goal'][f's{i}'] for i in range(7)]
+    relative_positions_y = [config['global_goal'][f'y{i}'] for i in range(7)]
+    relative_positions_u = [config['global_goal'][f'u{i}'] for i in range(7)]
     relative_positions = [relative_positions_s, relative_positions_y, relative_positions_s, relative_positions_u]
 
     x_list = [-9, -5, 2, 8,15,22,25]

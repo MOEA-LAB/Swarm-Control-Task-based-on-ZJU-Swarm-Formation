@@ -88,46 +88,21 @@ void PlanningVisualization::turnCallback(const geometry_msgs::PoseStampedPtr &ms
   }
   last_turn_msg = *msg;
 
-  state++;
-  if (state == 1) /* S */
+  count++;
+  if (count >= 2)
   {
-    line_size_ = 6;
-    line_begin_.resize(line_size_);
-    line_end_.resize(line_size_);
-    line_begin_ = {1, 2, 3, 0, 4, 5};
-    line_end_ = {2, 3, 0, 4, 5, 6};
+    shape = 'y';
   }
-  else if (state == 2 || state == 3) /* Y */
+  else if (count >= 4)
   {
-    line_size_ = 6;
-    line_begin_.resize(line_size_);
-    line_end_.resize(line_size_);
-    line_begin_ = {3, 0, 6, 1, 4, 5};
-    line_end_ = {0, 6, 1, 2, 6, 4};
+    shape = 's';
   }
-  else if (state == 4 || state == 5) /* S */
+  else if (count >= 6)
   {
-    line_size_ = 6;
-    line_begin_.resize(line_size_);
-    line_end_.resize(line_size_);
-    line_begin_ = {1, 2, 3, 0, 4, 5};
-    line_end_ = {2, 3, 0, 4, 5, 6};
-  }
-  else if (state == 6 || state == 7) /* U */
-  {
-    line_size_ = 6;
-    line_begin_.resize(line_size_);
-    line_end_.resize(line_size_);
-    line_begin_ = {3, 0, 6, 5, 4, 1};
-    line_end_ = {0, 6, 5, 4, 1, 2};
-  }
-  else
-  {
-    return;
+    shape = 'u';
   }
   return;
 }
-
 void PlanningVisualization::swarmGraphVisulCallback(const ros::TimerEvent &e)
 {
   if (line_size_ == 0) return;
@@ -153,6 +128,31 @@ void PlanningVisualization::swarmGraphVisulCallback(const ros::TimerEvent &e)
     line_strip.color.g = 0.3;
     line_strip.color.b = 0.3;
     line_strip.color.a = 0.8;
+
+    line_begin_.resize(6);
+    line_end_.resize(6);
+
+    switch (shape)
+    {
+      case 's': /* S */
+        line_begin_ = {1, 2, 3, 0, 4, 5};
+        line_end_ = {2, 3, 0, 4, 5, 6};
+        break;
+
+      case 'y': /* Y */
+        line_begin_ = {3, 0, 6, 1, 4, 5};
+        line_end_ = {0, 6, 1, 2, 6, 4};
+        break;
+
+      case 'u': /* U */
+        line_begin_ = {3, 0, 6, 5, 4, 1};
+        line_end_ = {0, 6, 5, 4, 1, 2};
+        break;
+
+      default:
+        ROS_ERROR("Invalid shape");
+        return;
+    }
 
     geometry_msgs::Point p, q;
     p.x = swarm_odom[line_begin_[i]](0);

@@ -50,32 +50,23 @@ void EGOReplanFSM::init(ros::NodeHandle &nh)
 
   for (int i = 0; i < 7; i++)
   {
-    nh.param("global_goal/relative_pos_y" + to_string(i) + "/x",
-             swarm_relative_pts_y_[i][0], -1.0);
-    nh.param("global_goal/relative_pos_y" + to_string(i) + "/y",
-             swarm_relative_pts_y_[i][1], -1.0);
-    nh.param("global_goal/relative_pos_y" + to_string(i) + "/z",
-             swarm_relative_pts_y_[i][2], -1.0);
+    nh.param("global_goal/y" + to_string(i) + "/x", y[i][0], -1.0);
+    nh.param("global_goal/y" + to_string(i) + "/y", y[i][1], -1.0);
+    nh.param("global_goal/y" + to_string(i) + "/z", y[i][2], -1.0);
   }
 
   for (int i = 0; i < 7; i++)
   {
-    nh.param("global_goal/relative_pos_s" + to_string(i) + "/x",
-             swarm_relative_pts_s_[i][0], -1.0);
-    nh.param("global_goal/relative_pos_s" + to_string(i) + "/y",
-             swarm_relative_pts_s_[i][1], -1.0);
-    nh.param("global_goal/relative_pos_s" + to_string(i) + "/z",
-             swarm_relative_pts_s_[i][2], -1.0);
+    nh.param("global_goal/s" + to_string(i) + "/x", s[i][0], -1.0);
+    nh.param("global_goal/s" + to_string(i) + "/y", s[i][1], -1.0);
+    nh.param("global_goal/s" + to_string(i) + "/z", s[i][2], -1.0);
   }
 
   for (int i = 0; i < 7; i++)
   {
-    nh.param("global_goal/relative_pos_u" + to_string(i) + "/x",
-             swarm_relative_pts_u_[i][0], -1.0);
-    nh.param("global_goal/relative_pos_u" + to_string(i) + "/y",
-             swarm_relative_pts_u_[i][1], -1.0);
-    nh.param("global_goal/relative_pos_u" + to_string(i) + "/z",
-             swarm_relative_pts_u_[i][2], -1.0);
+    nh.param("global_goal/u" + to_string(i) + "/x", u[i][0], -1.0);
+    nh.param("global_goal/u" + to_string(i) + "/y", u[i][1], -1.0);
+    nh.param("global_goal/u" + to_string(i) + "/z", u[i][2], -1.0);
   }
 
   nh.param("global_goal/swarm_scale", swarm_scale_, 1.0);
@@ -660,230 +651,242 @@ void EGOReplanFSM::polyTraj2ROSMsg(traj_utils::PolyTraj &msg)
     }
   }
 }
-
-void EGOReplanFSM::formationWaypointCallback(const geometry_msgs::PoseStampedPtr &msg)
+void EGOReplanFSM::changeToShape(const char shape, Eigen::Vector3d &relative_pos)
 {
-  if (msg->pose.position.z < -0.1) return;
-  if (last_goal_msg.pose.position.x == msg->pose.position.x &&
-      last_goal_msg.pose.position.y == msg->pose.position.y)
-    return;
-  last_goal_msg = *msg;
-
-  cout << "Triggered!" << endl;
-  init_pt_ = odom_pos_;
-
-  bool success = false;
-  swarm_central_pos_(0) = msg->pose.position.x;
-  swarm_central_pos_(1) = msg->pose.position.y;
-  swarm_central_pos_(2) = 0.5;
-
-  int id = planner_manager_->pp_.drone_id;
-
-  Eigen::Vector3d relative_pos;
-  if (state == 0)
+  switch (shape)
   {
-    relative_pos << swarm_relative_pts_s_[id][0], swarm_relative_pts_s_[id][1],
-        swarm_relative_pts_s_[id][2];
+    case 's':
+      relative_pos << s[planner_manager_->pp_.drone_id][0],
+          s[planner_manager_->pp_.drone_id][1], s[planner_manager_->pp_.drone_id][2];
+      break;
+    case 'y':
+      relative_pos << y[planner_manager_->pp_.drone_id][0],
+          y[planner_manager_->pp_.drone_id][1], y[planner_manager_->pp_.drone_id][2];
+      break;
+    case 'u':
+      relative_pos << u[planner_manager_->pp_.drone_id][0],
+          u[planner_manager_->pp_.drone_id][1], u[planner_manager_->pp_.drone_id][2];
+      break;
+    default:
+      ROS_ERROR("Wrong shape input!");
+      break;
   }
-  else if (state == 1 || state == 2)
+  void EGOReplanFSM::formationWaypointCallback(const geometry_msgs::PoseStampedPtr &msg)
   {
-    relative_pos << swarm_relative_pts_y_[id][0], swarm_relative_pts_y_[id][1],
-        swarm_relative_pts_y_[id][2];
-  }
-  else if (state == 3 || state == 4)
-  {
-    relative_pos << swarm_relative_pts_s_[id][0], swarm_relative_pts_s_[id][1],
-        swarm_relative_pts_s_[id][2];
-  }
-  else if (state == 5 || state == 6)
-  {
-    relative_pos << swarm_relative_pts_u_[id][0], swarm_relative_pts_u_[id][1],
-        swarm_relative_pts_u_[id][2];
-  }
-  else
-  {
-    return;
-  }
-  state += 1;
-  end_pt_ = swarm_central_pos_ + swarm_scale_ * relative_pos;
+    if (msg->pose.position.z < -0.1) return;
+    if (last_goal_msg.pose.position.x == msg->pose.position.x &&
+        last_goal_msg.pose.position.y == msg->pose.position.y)
+      return;
+    last_goal_msg = *msg;
 
-  std::vector<Eigen::Vector3d> one_pt_wps;
-  one_pt_wps.push_back(end_pt_);
+    cout << "Triggered!" << endl;
+    init_pt_ = odom_pos_;
 
-  success = planner_manager_->planGlobalTrajWaypoints(
-      odom_pos_, odom_vel_, Eigen::Vector3d::Zero(), one_pt_wps, Eigen::Vector3d::Zero(),
-      Eigen::Vector3d::Zero());
+    bool success = false;
+    swarm_central_pos_(0) = msg->pose.position.x;
+    swarm_central_pos_(1) = msg->pose.position.y;
+    swarm_central_pos_(2) = 0.5;
 
-  visualization_->displayGoalPoint(end_pt_, Eigen::Vector4d(0, 0.5, 0.5, 1), 0.3, 0);
-
-  if (success)
-  {
-    /*** display ***/
-    constexpr double step_size_t = 0.1;
-    int i_end = floor(planner_manager_->traj_.global_traj.duration / step_size_t);
-    vector<Eigen::Vector3d> gloabl_traj(i_end);
-    for (int i = 0; i < i_end; i++)
+    Eigen::Vector3d relative_pos;
+    switch (count)
     {
-      gloabl_traj[i] = planner_manager_->traj_.global_traj.traj.getPos(i * step_size_t);
+      case 0:
+      case 3:
+      case 4:
+        changeToShape('s', relative_pos);
+        break;
+      case 1:
+      case 2:
+        changeToShape('y', relative_pos);
+        break;
+      case 5:
+      case 6:
+        changeToShape('u', relative_pos);
+        break;
+      default:
+        return;
     }
 
-    end_vel_.setZero();
-    have_target_ = true;
-    have_new_target_ = true;
+    count++;
 
-    /*** FSM ***/
-    if (exec_state_ == WAIT_TARGET)
-      changeFSMExecState(SEQUENTIAL_START, "TRIG");
-    else if (exec_state_ == EXEC_TRAJ)
-      changeFSMExecState(REPLAN_TRAJ, "TRIG");
+    end_pt_ = swarm_central_pos_ + swarm_scale_ * relative_pos;
+    std::vector<Eigen::Vector3d> one_pt_wps;
+    one_pt_wps.push_back(end_pt_);
 
-    // visualization_->displayGoalPoint(end_pt_, Eigen::Vector4d(1, 0, 0, 1), 0.3, 0);
-    visualization_->displayGlobalPathList(gloabl_traj, 0.1, 0);
-  }
-  else
-  {
-    ROS_ERROR("Unable to generate global trajectory!");
-  }
-}
-void EGOReplanFSM::planGlobalTrajbyGivenWps()
-{
-  std::vector<Eigen::Vector3d> wps;
-  if (target_type_ == TARGET_TYPE::PRESET_TARGET)
-  {
-    wps.resize(waypoint_num_);
-    for (int i = 0; i < waypoint_num_; i++)
+    success = planner_manager_->planGlobalTrajWaypoints(
+        odom_pos_, odom_vel_, Eigen::Vector3d::Zero(), one_pt_wps,
+        Eigen::Vector3d::Zero(), Eigen::Vector3d::Zero());
+
+    visualization_->displayGoalPoint(end_pt_, Eigen::Vector4d(0, 0.5, 0.5, 1), 0.3, 0);
+
+    if (success)
     {
-      wps[i](0) = waypoints_[i][0];
-      wps[i](1) = waypoints_[i][1];
-      wps[i](2) = waypoints_[i][2];
+      /*** display ***/
+      constexpr double step_size_t = 0.1;
+      int i_end = floor(planner_manager_->traj_.global_traj.duration / step_size_t);
+      vector<Eigen::Vector3d> gloabl_traj(i_end);
+      for (int i = 0; i < i_end; i++)
+      {
+        gloabl_traj[i] = planner_manager_->traj_.global_traj.traj.getPos(i * step_size_t);
+      }
+
+      end_vel_.setZero();
+      have_target_ = true;
+      have_new_target_ = true;
+
+      /*** FSM ***/
+      if (exec_state_ == WAIT_TARGET)
+        changeFSMExecState(SEQUENTIAL_START, "TRIG");
+      else if (exec_state_ == EXEC_TRAJ)
+        changeFSMExecState(REPLAN_TRAJ, "TRIG");
+
+      // visualization_->displayGoalPoint(end_pt_, Eigen::Vector4d(1, 0, 0, 1), 0.3, 0);
+      visualization_->displayGlobalPathList(gloabl_traj, 0.1, 0);
     }
-    end_pt_ = wps.back();
-    for (size_t i = 0; i < (size_t)waypoint_num_; i++)
+    else
     {
-      visualization_->displayGoalPoint(wps[i], Eigen::Vector4d(0, 0.5, 0.5, 1), 0.3, i);
+      ROS_ERROR("Unable to generate global trajectory!");
+    }
+  }
+  void EGOReplanFSM::planGlobalTrajbyGivenWps()
+  {
+    std::vector<Eigen::Vector3d> wps;
+    if (target_type_ == TARGET_TYPE::PRESET_TARGET)
+    {
+      wps.resize(waypoint_num_);
+      for (int i = 0; i < waypoint_num_; i++)
+      {
+        wps[i](0) = waypoints_[i][0];
+        wps[i](1) = waypoints_[i][1];
+        wps[i](2) = waypoints_[i][2];
+      }
+      end_pt_ = wps.back();
+      for (size_t i = 0; i < (size_t)waypoint_num_; i++)
+      {
+        visualization_->displayGoalPoint(wps[i], Eigen::Vector4d(0, 0.5, 0.5, 1), 0.3, i);
+        ros::Duration(0.001).sleep();
+      }
+    }
+    else
+      return;
+
+    bool success = planner_manager_->planGlobalTrajWaypoints(
+        odom_pos_, Eigen::Vector3d::Zero(), Eigen::Vector3d::Zero(), wps,
+        Eigen::Vector3d::Zero(), Eigen::Vector3d::Zero());
+
+    if (success)
+    {
+      /*** display ***/
+      constexpr double step_size_t = 0.1;
+      int i_end = floor(planner_manager_->traj_.global_traj.duration / step_size_t);
+      std::vector<Eigen::Vector3d> gloabl_traj(i_end);
+      for (int i = 0; i < i_end; i++)
+      {
+        gloabl_traj[i] = planner_manager_->traj_.global_traj.traj.getPos(i * step_size_t);
+      }
+
+      end_vel_.setZero();
+      have_target_ = true;
+      have_new_target_ = true;
+
+      // visualization_->displayGoalPoint(end_pt_, Eigen::Vector4d(1, 0, 0, 1), 0.3, 0);
+      ros::Duration(0.001).sleep();
+      visualization_->displayGlobalPathList(gloabl_traj, 0.1, 0);
       ros::Duration(0.001).sleep();
     }
-  }
-  else
-    return;
-
-  bool success = planner_manager_->planGlobalTrajWaypoints(
-      odom_pos_, Eigen::Vector3d::Zero(), Eigen::Vector3d::Zero(), wps,
-      Eigen::Vector3d::Zero(), Eigen::Vector3d::Zero());
-
-  if (success)
-  {
-    /*** display ***/
-    constexpr double step_size_t = 0.1;
-    int i_end = floor(planner_manager_->traj_.global_traj.duration / step_size_t);
-    std::vector<Eigen::Vector3d> gloabl_traj(i_end);
-    for (int i = 0; i < i_end; i++)
+    else
     {
-      gloabl_traj[i] = planner_manager_->traj_.global_traj.traj.getPos(i * step_size_t);
-    }
-
-    end_vel_.setZero();
-    have_target_ = true;
-    have_new_target_ = true;
-
-    // visualization_->displayGoalPoint(end_pt_, Eigen::Vector4d(1, 0, 0, 1), 0.3, 0);
-    ros::Duration(0.001).sleep();
-    visualization_->displayGlobalPathList(gloabl_traj, 0.1, 0);
-    ros::Duration(0.001).sleep();
-  }
-  else
-  {
-    ROS_ERROR("Unable to generate global trajectory!");
-  }
-}
-
-bool EGOReplanFSM::planFromGlobalTraj(const int trial_times /*=1*/)  // zx-todo
-{
-  start_pt_ = odom_pos_;
-  start_vel_ = odom_vel_;
-  start_acc_.setZero();
-
-  for (int i = 0; i < trial_times; i++)
-  {
-    if (callReboundReplan(true, false, true))
-    {
-      return true;
+      ROS_ERROR("Unable to generate global trajectory!");
     }
   }
-  return false;
-}
 
-bool EGOReplanFSM::planFromLocalTraj(bool flag_use_poly_init, bool use_formation)
-{
-  double t_debug_start = ros::Time::now().toSec();
-  LocalTrajData *info = &planner_manager_->traj_.local_traj;
-  double t_cur = ros::Time::now().toSec() - info->start_time;
-
-  start_pt_ = info->traj.getPos(t_cur);
-  start_vel_ = info->traj.getVel(t_cur);
-  start_acc_ = info->traj.getAcc(t_cur);
-
-  bool success = callReboundReplan(flag_use_poly_init, false, use_formation);
-
-  if (!success) return false;
-
-  // cout << "planFromLocalTraj : " << ros::Time::now().toSec() - t_debug_start << endl;
-
-  return true;
-}
-
-bool EGOReplanFSM::callReboundReplan(bool flag_use_poly_init, bool flag_randomPolyTraj,
-                                     bool use_formation)
-{
-  planner_manager_->getLocalTarget(planning_horizen_, start_pt_, end_pt_,
-                                   local_target_pt_, local_target_vel_);
-
-  Eigen::Vector3d desired_start_pt, desired_start_vel, desired_start_acc;
-  double desired_start_time;
-  if (have_local_traj_ && use_formation)
+  bool EGOReplanFSM::planFromGlobalTraj(const int trial_times /*=1*/)  // zx-todo
   {
-    desired_start_time = ros::Time::now().toSec() + replan_trajectory_time_;
-    desired_start_pt = planner_manager_->traj_.local_traj.traj.getPos(
-        desired_start_time - planner_manager_->traj_.local_traj.start_time);
-    desired_start_vel = planner_manager_->traj_.local_traj.traj.getVel(
-        desired_start_time - planner_manager_->traj_.local_traj.start_time);
-    desired_start_acc = planner_manager_->traj_.local_traj.traj.getAcc(
-        desired_start_time - planner_manager_->traj_.local_traj.start_time);
+    start_pt_ = odom_pos_;
+    start_vel_ = odom_vel_;
+    start_acc_.setZero();
+
+    for (int i = 0; i < trial_times; i++)
+    {
+      if (callReboundReplan(true, false, true))
+      {
+        return true;
+      }
+    }
+    return false;
   }
-  else
+
+  bool EGOReplanFSM::planFromLocalTraj(bool flag_use_poly_init, bool use_formation)
   {
-    desired_start_pt = start_pt_;
-    desired_start_vel = start_vel_;
-    desired_start_acc = start_acc_;
+    double t_debug_start = ros::Time::now().toSec();
+    LocalTrajData *info = &planner_manager_->traj_.local_traj;
+    double t_cur = ros::Time::now().toSec() - info->start_time;
+
+    start_pt_ = info->traj.getPos(t_cur);
+    start_vel_ = info->traj.getVel(t_cur);
+    start_acc_ = info->traj.getAcc(t_cur);
+
+    bool success = callReboundReplan(flag_use_poly_init, false, use_formation);
+
+    if (!success) return false;
+
+    // cout << "planFromLocalTraj : " << ros::Time::now().toSec() - t_debug_start << endl;
+
+    return true;
   }
-  bool plan_success = planner_manager_->reboundReplan(
-      desired_start_pt, desired_start_vel, desired_start_acc, desired_start_time,
-      local_target_pt_, local_target_vel_, (have_new_target_ || flag_use_poly_init),
-      flag_randomPolyTraj, use_formation, have_local_traj_);
 
-  have_new_target_ = false;
-
-  if (plan_success)
+  bool EGOReplanFSM::callReboundReplan(bool flag_use_poly_init, bool flag_randomPolyTraj,
+                                       bool use_formation)
   {
+    planner_manager_->getLocalTarget(planning_horizen_, start_pt_, end_pt_,
+                                     local_target_pt_, local_target_vel_);
+
+    Eigen::Vector3d desired_start_pt, desired_start_vel, desired_start_acc;
+    double desired_start_time;
+    if (have_local_traj_ && use_formation)
+    {
+      desired_start_time = ros::Time::now().toSec() + replan_trajectory_time_;
+      desired_start_pt = planner_manager_->traj_.local_traj.traj.getPos(
+          desired_start_time - planner_manager_->traj_.local_traj.start_time);
+      desired_start_vel = planner_manager_->traj_.local_traj.traj.getVel(
+          desired_start_time - planner_manager_->traj_.local_traj.start_time);
+      desired_start_acc = planner_manager_->traj_.local_traj.traj.getAcc(
+          desired_start_time - planner_manager_->traj_.local_traj.start_time);
+    }
+    else
+    {
+      desired_start_pt = start_pt_;
+      desired_start_vel = start_vel_;
+      desired_start_acc = start_acc_;
+    }
+    bool plan_success = planner_manager_->reboundReplan(
+        desired_start_pt, desired_start_vel, desired_start_acc, desired_start_time,
+        local_target_pt_, local_target_vel_, (have_new_target_ || flag_use_poly_init),
+        flag_randomPolyTraj, use_formation, have_local_traj_);
+
+    have_new_target_ = false;
+
+    if (plan_success)
+    {
+      traj_utils::PolyTraj msg;
+      polyTraj2ROSMsg(msg);
+      poly_traj_pub_.publish(msg);
+      broadcast_ploytraj_pub_.publish(msg);
+      have_local_traj_ = true;
+    }
+
+    return plan_success;
+  }
+
+  bool EGOReplanFSM::callEmergencyStop(Eigen::Vector3d stop_pos)
+  {
+    planner_manager_->EmergencyStop(stop_pos);
+
     traj_utils::PolyTraj msg;
     polyTraj2ROSMsg(msg);
     poly_traj_pub_.publish(msg);
-    broadcast_ploytraj_pub_.publish(msg);
-    have_local_traj_ = true;
+
+    return true;
   }
-
-  return plan_success;
-}
-
-bool EGOReplanFSM::callEmergencyStop(Eigen::Vector3d stop_pos)
-{
-  planner_manager_->EmergencyStop(stop_pos);
-
-  traj_utils::PolyTraj msg;
-  polyTraj2ROSMsg(msg);
-  poly_traj_pub_.publish(msg);
-
-  return true;
-}
 
 }  // namespace ego_planner

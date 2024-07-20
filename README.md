@@ -23,8 +23,8 @@ catkin_make
 **step4: publish goal**
 
 ```python
-sudo chmod +x goal.py
-python3 goal.py
+sudo chmod +x publish_goal.py
+python3 publish_goal.py
 ```
 
 
