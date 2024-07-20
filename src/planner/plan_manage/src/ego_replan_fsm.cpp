@@ -673,10 +673,6 @@ void EGOReplanFSM::polyTraj2ROSMsg(traj_utils::PolyTraj &msg)
 void EGOReplanFSM::formationWaypointCallback(const geometry_msgs::PoseStampedPtr &msg)
 {
   if (msg->pose.position.z < -0.1) return;
-  // if (last_goal_msg.pose.position.x == msg->pose.position.x &&
-  //     last_goal_msg.pose.position.y == msg->pose.position.y)
-  //   return;
-  // last_goal_msg = *msg;
 
   cout << "Triggered!" << endl;
   cout << "times = " << times << endl;
