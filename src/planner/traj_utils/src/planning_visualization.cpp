@@ -89,7 +89,11 @@ void PlanningVisualization::turnCallback(const geometry_msgs::PoseStampedPtr &ms
   last_turn_msg = *msg;
 
   count++;
-  if (count >= 2)
+  if (count < 2)
+  {
+    shape = 's';
+  }
+  else if (count >= 2)
   {
     shape = 'y';
   }
