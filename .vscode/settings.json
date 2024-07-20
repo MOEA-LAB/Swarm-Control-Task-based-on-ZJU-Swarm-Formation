@@ -26,7 +26,8 @@
     "sparsecore": "cpp",
     "__locale": "cpp",
     "locale": "cpp",
-    "bitset": "cpp"
+    "bitset": "cpp",
+    "optional": "cpp"
   },
   "python.autoComplete.extraPaths": [
     "/home/dwl/Swarm-Control-Course-Additional-Work/devel/lib/python3/dist-packages",
