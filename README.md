@@ -29,7 +29,11 @@ python3 goal.py
 
 
 
-## 怎么写？
+## 怎么写？（to shui laoshi）
+
+首先你把上面的readme改一下，不要三个人的readme风格都一样。然后下面的写完之后放在一个新的md文件里面，readme就只放程序怎么跑，写好之后传上来让我看一下。
+
+
 
 首先在normal_hexagon.launch文件中发现是在这里启动了6个`run_in_sim.launch`的无人机节点，因此为了找到单个无人机的位置，那就需要在该文件里面找对应的节点，在advanced_param.xml里面，发现了`drone_$(arg drone_id)_ego_planner_node`，那就说明这里就是主要的节点。经过搜索可以找到该节点的CMakeLists文件在`src/planner/plan_manage/CMakeLists.txt`（**自己截个图，一定要自己截图，或者主题不一样显示也不一样！！！！**）
 
