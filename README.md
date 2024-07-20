@@ -29,7 +29,7 @@ python3 goal.py
 
 
 
-## 怎么写？（to shui laoshi）
+## 怎么写？（to star wind）
 
 首先你把上面的readme改一下，不要三个人的readme风格都一样。然后下面的写完之后放在一个新的md文件里面，readme就只放程序怎么跑，写好之后传上来让我看一下。
 
