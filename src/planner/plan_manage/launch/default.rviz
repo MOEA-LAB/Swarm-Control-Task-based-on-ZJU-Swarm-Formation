@@ -71,7 +71,7 @@ Panels:
         - /drone101/Simulation1
         - /drone101/Simulation1/robot1
       Splitter Ratio: 0.45006656646728516
-    Tree Height: 1157
+    Tree Height: 441
   - Class: rviz/Selection
     Name: Selection
   - Class: rviz/Tool Properties
@@ -85,7 +85,7 @@ Panels:
   - Class: rviz/Time
     Name: Time
     SyncMode: 0
-    SyncSource: ""
+    SyncSource: simulation_map
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -173,7 +173,7 @@ Visualization Manager:
               Marker Topic: /drone_0_ego_planner_node/optimal_list
               Name: optimal_traj
               Namespaces:
-                {}
+                "": true
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -301,7 +301,7 @@ Visualization Manager:
               Marker Topic: /drone_0_odom_visualization/robot
               Name: robot
               Namespaces:
-                {}
+                mesh: true
               Queue Size: 100
               Value: true
             - Class: rviz/Image
@@ -345,7 +345,7 @@ Visualization Manager:
               Marker Topic: /drone_1_ego_planner_node/optimal_list
               Name: optimal_traj
               Namespaces:
-                {}
+                "": true
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -429,7 +429,7 @@ Visualization Manager:
               Marker Topic: /drone_1_odom_visualization/robot
               Name: robot
               Namespaces:
-                {}
+                mesh: true
               Queue Size: 100
               Value: true
             - Class: rviz/Image
@@ -473,7 +473,7 @@ Visualization Manager:
               Marker Topic: /drone_2_ego_planner_node/optimal_list
               Name: optimal_traj
               Namespaces:
-                {}
+                "": true
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -557,7 +557,7 @@ Visualization Manager:
               Marker Topic: /drone_2_odom_visualization/robot
               Name: robot
               Namespaces:
-                {}
+                mesh: true
               Queue Size: 100
               Value: true
             - Class: rviz/Image
@@ -601,7 +601,7 @@ Visualization Manager:
               Marker Topic: /drone_3_ego_planner_node/optimal_list
               Name: optimal_traj
               Namespaces:
-                {}
+                "": true
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -685,7 +685,7 @@ Visualization Manager:
               Marker Topic: /drone_3_odom_visualization/robot
               Name: robot
               Namespaces:
-                {}
+                mesh: true
               Queue Size: 100
               Value: true
             - Class: rviz/Image
@@ -729,7 +729,7 @@ Visualization Manager:
               Marker Topic: /drone_4_ego_planner_node/optimal_list
               Name: optimal_traj
               Namespaces:
-                {}
+                "": true
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -813,7 +813,7 @@ Visualization Manager:
               Marker Topic: /drone_4_odom_visualization/robot
               Name: robot
               Namespaces:
-                {}
+                mesh: true
               Queue Size: 100
               Value: true
             - Class: rviz/Image
@@ -857,7 +857,7 @@ Visualization Manager:
               Marker Topic: /drone_5_ego_planner_node/optimal_list
               Name: optimal_traj
               Namespaces:
-                {}
+                "": true
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -941,7 +941,7 @@ Visualization Manager:
               Marker Topic: /drone_5_odom_visualization/robot
               Name: robot
               Namespaces:
-                {}
+                mesh: true
               Queue Size: 100
               Value: true
             - Class: rviz/Image
@@ -985,7 +985,7 @@ Visualization Manager:
               Marker Topic: /drone_6_ego_planner_node/optimal_list
               Name: optimal_traj
               Namespaces:
-                {}
+                "": true
               Queue Size: 100
               Value: true
             - Class: rviz/Marker
@@ -1069,7 +1069,7 @@ Visualization Manager:
               Marker Topic: /drone_6_odom_visualization/robot
               Name: robot
               Namespaces:
-                {}
+                mesh: true
               Queue Size: 100
               Value: true
             - Class: rviz/Image
@@ -1605,7 +1605,7 @@ Visualization Manager:
       Marker Topic: /drone_0_ego_planner_node/swarm_graph_visual
       Name: swarm_graph_structrue
       Namespaces:
-        {}
+        "": true
       Queue Size: 100
       Value: true
   Enabled: true
@@ -1637,7 +1637,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 61.89569091796875
+      Distance: 42.180179595947266
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
