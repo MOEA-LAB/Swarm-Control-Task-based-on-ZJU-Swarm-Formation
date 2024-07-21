@@ -920,3 +920,5 @@ bool EGOReplanFSM::callEmergencyStop(Eigen::Vector3d stop_pos)
 }
 
 }  // namespace ego_planner
+
+
