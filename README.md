@@ -23,10 +23,13 @@ catkin_make
 **step4: publish goal**
 
 ```python
-sudo chmod +x publish_goal.py
 python3 publish_goal.py
 ```
 
+
+
+## Result
+![Swarm Control Demo](./result.gif)
 
 
 ****
