@@ -1,6 +1,4 @@
-## 思路
-
-### 原始代码理解
+### 如何做？
 
 首先在normal_hexagon.launch文件中发现是在这里启动了6个`run_in_sim.launch`的无人机节点，因此为了找到单个无人机的位置，那就需要在该文件里面找对应的节点，在advanced_param.xml里面，发现了`drone_$(arg drone_id)_ego_planner_node`，那就说明这里就是主要的节点。经过搜索可以找到该节点的CMakeLists文件在`src/planner/plan_manage/CMakeLists.txt`
 
