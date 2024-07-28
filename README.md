@@ -1,3 +1,9 @@
+<div align=center>
+<img src="./assets/image-20240729012256807.png" width="800px">
+</div> 
+
+## 指引
+
 ## 运行
 
 1. 编译
@@ -30,3 +36,6 @@
    python3 goal.py
    ```
 
+## Reference
+
+![post](./assets/post.jpg)
